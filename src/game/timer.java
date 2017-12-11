@@ -1,49 +1,60 @@
 package game;
 
-import java.awt.*; 
-import java.awt.event.*; 
-import javax.swing.*; 
-import javax.swing.event.*; 
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-class timer extends JPanel { 
-        JProgressBar p; 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JProgressBar;
+import javax.swing.Timer;
 
-        public timer() { 
-                setLayout(null); 
-                p = new JProgressBar();
-                p.setBackground(Color.white);
-                p.setForeground(Color.yellow);
-                p.setMinimum(0); 
-                p.setMaximum(30); 
-                p.setSize(1000, 20);
-                p.setValue(0); 
+public class timer {
+  public static void main(String[] args) {
+    JProgressBar progressBar = new JProgressBar();
+    JButton button = new JButton("Pause");
+    
+	progressBar.setBackground(Color.white);
+    progressBar.setForeground(Color.yellow);
+   
+    
+    JFrame f = new JFrame();
+    f.setLayout(null);
+    f.setSize(1000,600);
+    progressBar.setBounds(0, 0, 1000, 20);
+    button.setBounds(870, 30, 100, 30);
+    f.add(progressBar);
+    f.add(button);
+    
+    progressBar.setValue(100);
+    ActionListener updateProBar = new ActionListener() {
+      public void actionPerformed(ActionEvent actionEvent) {
+        int val = progressBar.getValue();
+        progressBar.setValue(--val);
+        System.out.println(progressBar.getValue());
+      }
+    };
+    
 
-                add(p); 
-        } 
+    Timer   timer = new Timer(50, updateProBar);
+    timer.start();
+    timer.isRunning();
+    
+    button.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        if (timer.isRunning()) {
+          timer.stop();
+          button.setText("Start");
+        } else if (button.getText() != "Pause") {
+          timer.start();
+          button.setText("Pause");
+        }
+      }
+    });
 
-        public void go() { 
-                try        { 
-                        for(int i=30;i>=0;i--) { 	// 30부터 1초씩 타이머 작동
-                                p.setValue(i); 
-                                Thread.sleep(1000); 	// 1초씩 딜레이
-                        } 
-                } 
-                catch (InterruptedException e) {} 
-        } 
-
-//        public Dimension getPreferredSize() { 
-//                return new Dimension(300, 80); 
-//        } 
-//        
-
-        
-        public static void main(String[] args) { 
-                JFrame f = new  JFrame("Timer"); 
-                timer panel = new timer(); 
-                f.getContentPane().add(panel); 
-                f.setSize(1000,600);  
-                f.setVisible(true); 
-                panel.go(); 
-       
-        } 
+    
+    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    f.setVisible(true);
+  }
 }
