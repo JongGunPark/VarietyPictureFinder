@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Graphics;
+import javax.swing.Timer;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -9,6 +10,7 @@ public class frame extends JFrame {
 	JPanel panel_main;
 	JPanel panel_stage1;
 	JPanel panel_howto;
+	
 	
 	public frame() {
 		setTitle("다양한 그림 찾기");
@@ -25,7 +27,7 @@ public class frame extends JFrame {
 		panel_stage1 = new panel_stage1(this);
 		add(panel_stage1);
 		panel_stage1.setVisible(false);
-		
+		((game.panel_stage1) panel_stage1).timerStop();
 		panel_howto = new panel_howto(this);
 		add(panel_howto);
 		panel_howto.setVisible(false);
@@ -50,7 +52,6 @@ public class frame extends JFrame {
 			panel_main.setVisible(false);
 		
 			remove(panel_howto);
-			
 			panel_howto = new panel_howto(this);
 			add(panel_howto);
 			panel_howto.setVisible(true);
@@ -60,7 +61,6 @@ public class frame extends JFrame {
 			panel_main.setVisible(false);
 			
 			remove(panel_stage1);
-			
 			panel_stage1 = new panel_stage1(this);
 			add(panel_stage1);
 			panel_stage1.setVisible(true);

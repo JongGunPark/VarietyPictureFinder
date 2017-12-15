@@ -20,14 +20,10 @@ import javax.swing.Timer;
 
 
 public class panel_stage1 extends JPanel implements ActionListener  {
-
-   JProgressBar p; 
-   long startTime; 
-   boolean gameEnd=false;
-   boolean pause=false;
-   boolean pauseStart=false;
-   
-   
+	
+   JProgressBar p;
+   Timer timer;
+ 
    static int[] imageX = {269, 7, 470, 136};
    static int[] imageY = {102, 191, 106, 53};
    // 틀린부분의 범위 기본 설정값
@@ -47,8 +43,14 @@ public class panel_stage1 extends JPanel implements ActionListener  {
    ImageIcon circle = new ImageIcon("circle.png");
    Image cir = circle.getImage();
    
+//	int lifeNum=3;
+//	ImageIcon lifeIcon;
+//	ImageIcon life3 = new ImageIcon("Life3.jpg","3Life");
+//	ImageIcon life2 = new ImageIcon("Life2.jpg","2life");
+//	ImageIcon life1 = new ImageIcon("Life1.jpg","1life");
+	
    public panel_stage1(frame fr) {
-      
+	   setBackground(new Color(252,241,192));
       CustomMouseAdapter cma = new CustomMouseAdapter (); 
       //image1 이미지가 저장된 JPanel a 객체에 감지기 설정
       bg.addMouseListener(cma);
@@ -65,6 +67,9 @@ public class panel_stage1 extends JPanel implements ActionListener  {
        progressBar.setBorderPainted(false);
        progressBar.setBounds(0, 470, 1000, 20);
        button.setBounds(870, 500, 100, 30);
+//	    LifeControl();
+//	    lifeDraw.setBounds(100, 500, 100, 50);
+//	    add(lifeDraw);
        add(progressBar);
        add(button);
        progressBar.setValue(100);
@@ -77,7 +82,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
          }
        };
 
-       Timer timer = new Timer(300, updateProBar);
+       timer = new Timer(300, updateProBar);
        timer.start();
        timer.isRunning();
 
@@ -99,65 +104,81 @@ public class panel_stage1 extends JPanel implements ActionListener  {
       add(bg);
       bg2.setBounds(502,55,img2.getIconWidth(), img2.getIconHeight());
       add(bg2);
+      
       setVisible(true);
       
    }
 
    
    public boolean isRangeof(int index, Point p){
-	   //포인트 X좌표를 입력받아 pointX로 저장
-	   		int pointX = p.x;
-	   //포인트 Y좌표를 입력받아 pointX로 저장
-	   		int pointY = p.y;
-	   //배열순번과 해당좌표를 입력해 반환
-	   		return (pointX >= imageX[index]-range) && (pointX <= imageX[index]+range) 
-	   				&& (pointY >= imageY[index]-range) && (pointY <= imageY[index]+range);
-	  }
-	  
+      //포인트 X좌표를 입력받아 pointX로 저장
+            int pointX = p.x;
+      //포인트 Y좌표를 입력받아 pointX로 저장
+            int pointY = p.y;
+      //배열순번과 해당좌표를 입력해 반환
+            return (pointX >= imageX[index]-range) && (pointX <= imageX[index]+range) 
+                  && (pointY >= imageY[index]-range) && (pointY <= imageY[index]+range);
+     }
+     
    
    class CustomMouseAdapter extends MouseAdapter{
-	   public void mouseReleased(MouseEvent e) {
-	    // 마우스클릭한 곳의 x,y좌표값을 얻어와 Point 객체를 생성
-	    Point p = e.getPoint();
-	    if (isRangeof(0,p)) {
-	    	f1 = true; 
-	    	bg.repaint();
-	    	bg2.repaint(); //양쪽모두 동그라미 표시를 위한 repaint
+      public void mouseReleased(MouseEvent e) {
+       // 마우스클릭한 곳의 x,y좌표값을 얻어와 Point 객체를 생성
+       Point p = e.getPoint();
+       if (isRangeof(0,p)) {
+          f1 = true; 
+          bg.repaint();
+          bg2.repaint(); //양쪽모두 동그라미 표시를 위한 repaint
 
-	    } else if (isRangeof(1,p)) {
-	    	f2 = true;
-	    	bg.repaint();
-	    	bg2.repaint();
+       } else if (isRangeof(1,p)) {
+          f2 = true;
+          bg.repaint();
+          bg2.repaint();
 
-	    } else if (isRangeof(2,p)) {
-	    	f3 = true;
-	    	bg.repaint();
-	    	bg2.repaint();
+       } else if (isRangeof(2,p)) {
+          f3 = true;
+          bg.repaint();
+          bg2.repaint();
 
-	    } else if (isRangeof(3,p)) {
-	    	f4 = true;
-	    	bg.repaint();
-	    	bg2.repaint();
+       } else if (isRangeof(3,p)) {
+          f4 = true;
+          bg.repaint();
+          bg2.repaint();
 
-	    } 
-//	    
-//	    // 틀린부분을 다 찾으면 메세지 출력
-//	    if (f1 == true && f2 == true && f3 == true && f4 == true) {
-//	     JOptionPane.showMessageDialog(null, "축하합니다.");
-//	     //다 완료하면 다시 시작을 위해 동그라미 갱신
-//	     f1 = false;
-//	     f2 = false;
-//	     f3 = false;
-//	     f4 = false;
-//	     
-//	     bg.repaint();
-//	     bg2.repaint();
-//	    }// if end
-	   }// mouseReleased()
-	  }//CustomMouseAdapter{}
+       } 
+//       
+//       // 틀린부분을 다 찾으면 메세지 출력
+//       if (f1 == true && f2 == true && f3 == true && f4 == true) {
+//        JOptionPane.showMessageDialog(null, "축하합니다.");
+//        //다 완료하면 다시 시작을 위해 동그라미 갱신
+//        f1 = false;
+//        f2 = false;
+//        f3 = false;
+//        f4 = false;
+//        
+//        bg.repaint();
+//        bg2.repaint();
+//       }// if end
+      	}// mouseReleased()
+      }//CustomMouseAdapter{}
 
 
-   
+   public void timerStop() {
+		timer.stop();		
+	}
+//	public void LifeControl() {
+//
+//		if (lifeNum==3) {
+//			lifeIcon = life3;
+//			System.out.println("실행됩니다.");
+//			}
+//		else if (lifeNum==2) {
+//			lifeIcon = life2;
+//			}
+//		else {
+//			lifeIcon = life1;
+//			}
+//		}
    @Override
       public void update(Graphics g) {
          // TODO Auto-generated method stub
@@ -167,26 +188,26 @@ public class panel_stage1 extends JPanel implements ActionListener  {
 
    public void paint(Graphics g) {
 
-	   super.paint(g);
-	   // 동그라미 색깔 빨강으로 표시
-	   g.setColor(Color.RED);
-	   // 틀린그림부분에 동그라미 그리기
-	   if (f1 == true) {
-		   g.drawImage(cir, 252, 130, 60, 60, this);		//파란애
-		   g.drawImage(cir, 742, 130, 60, 60, this);
-	   } 
-	   if (f2 == true) {
-		   g.drawImage(cir, 7, 225, 60, 60, this);		//가방
-		   g.drawImage(cir, 499, 225, 60, 60, this);
-	   }
-	   if (f3 == true) {
-	    	g.drawImage(cir, 442, 145, 60, 60, this);		//구름
-	    	g.drawImage(cir, 932, 145, 60, 60, this);
-	   }
-	   if (f4 == true) {
-	    	g.drawImage(cir, 123, 83, 60, 60, this);		//거북이 등
-	    	g.drawImage(cir, 610, 83, 60, 60, this);
-	   }
+      super.paint(g);
+      // 동그라미 색깔 빨강으로 표시
+      g.setColor(Color.RED);
+      // 틀린그림부분에 동그라미 그리기
+      if (f1 == true) {
+         g.drawImage(cir, 252, 130, 60, 60, this);      //파란애
+         g.drawImage(cir, 742, 130, 60, 60, this);
+      } 
+      if (f2 == true) {
+         g.drawImage(cir, 7, 225, 60, 60, this);      //가방
+         g.drawImage(cir, 499, 225, 60, 60, this);
+      }
+      if (f3 == true) {
+          g.drawImage(cir, 442, 145, 60, 60, this);      //구름
+          g.drawImage(cir, 932, 145, 60, 60, this);
+      }
+      if (f4 == true) {
+          g.drawImage(cir, 123, 83, 60, 60, this);      //거북이 등
+          g.drawImage(cir, 610, 83, 60, 60, this);
+      }
    }
     
     
