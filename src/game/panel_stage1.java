@@ -21,23 +21,24 @@ import javax.swing.Timer;
 
 
 public class panel_stage1 extends JPanel implements ActionListener  {
-
+	frame fr;
    JProgressBar p;
    Timer timer;
    Timer endtimer;
    int lifeNum=3;
    int questionNum=4;
    int val;
-   frame fr;
+   
+   
    static int[] imageX = {277, 7, 483, 139};
    static int[] imageY = {101, 190, 110, 53};
    // 틀린부분의 범위 기본 설정값
    static final int range = 15;
    
-    boolean f1 = false;
-    boolean f2 = false;
-    boolean f3 = false;
-    boolean f4 = false;
+   static boolean f1 = false;
+   static boolean f2 = false;
+   static boolean f3 = false;
+   static boolean f4 = false;
 
    
    ImageIcon img = new ImageIcon("image1.jpg","Stage1_image1");
@@ -49,27 +50,26 @@ public class panel_stage1 extends JPanel implements ActionListener  {
    ImageIcon circle = new ImageIcon("circle.png");
    Image cir = circle.getImage();
    
-   ImageIcon clear2 = new ImageIcon("clear.png");
+   ImageIcon clear2 = new ImageIcon("clear.gif");
    Image cle = clear2.getImage();
    
    ImageIcon life1 = new ImageIcon("life1.png","1life");
    ImageIcon life2 = new ImageIcon("life2.png","2life");
    ImageIcon life3 = new ImageIcon("life3.png","3Life");
-   JLabel life = new JLabel();   // 목숨에 대한 라벨 : 클릭 수에 따라 변화
+   JLabel life = new JLabel();	// 목숨에 대한 라벨 : 클릭 수에 따라 변화
 
    ImageIcon que0 = new ImageIcon("zero.jpg");
    ImageIcon que1 = new ImageIcon("one.jpg");
    ImageIcon que2 = new ImageIcon("two.jpg");
    ImageIcon que3 = new ImageIcon("three.jpg");
    ImageIcon que4 = new ImageIcon("four.jpg");
-   JLabel question = new JLabel();   // 남은 문제의 갯수 라벨 : 정답 체크 수에 따라 변화
-   
-   
+   JLabel question = new JLabel();	// 남은 문제의 갯수 라벨 : 정답 체크 수에 따라 변화
+	
    //JLabel clear = new JLabel();
    public panel_stage1(frame fr) {
-      
-     this.fr=fr;
-     setBackground(new Color(252,241,192));
+	   
+	  this.fr = fr;
+	  setBackground(new Color(252,241,192));
       CustomMouseAdapter cma = new CustomMouseAdapter (); 
       //image1 이미지가 저장된 JPanel a 객체에 감지기 설정
       bg.addMouseListener(cma);
@@ -96,7 +96,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
       question.setIcon(new ImageIcon("four.jpg","4que"));
       //clear.setBounds(150,150,600,300);
       //clear.setIcon(new ImageIcon("clear.jpg"));
-//     add(title);
+//	  add(title);
       add(progressBar);
       add(life);
       add(question);
@@ -108,6 +108,10 @@ public class panel_stage1 extends JPanel implements ActionListener  {
          public void actionPerformed(ActionEvent actionEvent) {
            val = progressBar.getValue();
            progressBar.setValue(--val);
+           if (val==0) {
+        	   fr.change("panel_fail");
+        	   timer.stop();
+           }
            System.out.println(progressBar.getValue());
          }
        };
@@ -116,17 +120,18 @@ public class panel_stage1 extends JPanel implements ActionListener  {
        timer.start();
        timer.isRunning();
        
+
        button.addActionListener(new ActionListener() {
-           public void actionPerformed(ActionEvent e) {
-             if (timer.isRunning()) {
-               timer.stop();         
-               fr.change("panel_pause");
-             } 
-             
+         public void actionPerformed(ActionEvent e) {
+           if (timer.isRunning()) {
+             timer.stop();
+             button.setText("Start");
+           } else if (button.getText() != "Pause") {
+             timer.start();
+             button.setText("Pause");
            }
-         });
-
-
+         }
+       });
       
       //add(clear);
       //clear.setVisible(false);
@@ -137,9 +142,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
       
       
       setVisible(true);
-
       
-
    }
 
    
@@ -160,79 +163,80 @@ public class panel_stage1 extends JPanel implements ActionListener  {
        Point p = e.getPoint();
 
        if (isRangeof(0,p)) {
-         if (f1 == false) {
-         questionNum--;
-         }
+    	  if (f1 == false) {
+    	  questionNum--;
+    	  }
           f1 = true; 
           bg.repaint();
           bg2.repaint(); //양쪽모두 동그라미 표시를 위한 repaint
           
        } else if (isRangeof(1,p)) {
-          if (f2 == false) {
-             questionNum--;
-             }
+    	   if (f2 == false) {
+    		   questionNum--;
+    	   	}
           f2 = true;
           bg.repaint();
           bg2.repaint();
           
        } else if (isRangeof(2,p)) {
-          if (f3 == false) {
-             questionNum--;
-             }
+    	   if (f3 == false) {
+    		   questionNum--;
+    	   	}
           f3 = true;
           bg.repaint();
           bg2.repaint();
           
        } else if (isRangeof(3,p)) {
-          if (f4 == false) {
-             questionNum--;
-           }
+    	   if (f4 == false) {
+    		   questionNum--;
+    	    }
           f4 = true;
           bg.repaint();
           bg2.repaint();
           
        } else {
-             lifeNum--;
-          System.out.println(lifeNum);
-           
-          if (lifeNum==2) {
-             life.setIcon(life2);
-          }
-          else if(lifeNum==1) {
-             life.setIcon(life1);   
-          }
-                       
-          
+    	   	lifeNum--;
+    		System.out.println(lifeNum);
+    	    
+    		if (lifeNum==2) {
+    			life.setIcon(life2);
+    		}
+    		else if(lifeNum==1) {
+    			life.setIcon(life1);	
+    		}
+    			    	   
+    	   
        }
-      if (questionNum==4) {
-         question.setIcon(que4);
-      }
-      else if(questionNum==3) {
-         question.setIcon(que3);
-      }else if(questionNum==2) {
-         question.setIcon(que2);
-      }else if(questionNum==1) {
-         question.setIcon(que1);   
-      }else if(questionNum==0) {
-         question.setIcon(que0);   
-      }
+		if (questionNum==4) {
+			question.setIcon(que4);
+		}
+		else if(questionNum==3) {
+			question.setIcon(que3);
+		}else if(questionNum==2) {
+			question.setIcon(que2);
+		}else if(questionNum==1) {
+			question.setIcon(que1);	
+		}else if(questionNum==0) {
+			question.setIcon(que0);	
+		}
        //       
 //       // 틀린부분을 다 찾으면 메세지 출력
        if (f1 == true && f2 == true && f3 == true && f4 == true) {
         System.out.println("축하합니다. 다 맞추셨습니다.");
         //여기다가 clear글자를 띄웁니다.
-
+        
         //clear.setVisible(true);
         timerStop();
         ActionListener andthenClear = new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-              
+            	fr.change("panel_stage2");          
               //여기다가 다음화면으로 넘어가는 코드를 넣습니다.
               endtimer.stop();
+       
             }
           };
           
-          endtimer = new Timer(1000, andthenClear);
+          endtimer = new Timer(2000, andthenClear);
           endtimer.start();
           endtimer.isRunning();
        }
@@ -245,30 +249,14 @@ public class panel_stage1 extends JPanel implements ActionListener  {
 //        bg.repaint();
 //        bg2.repaint();
 //       }// if end
-         }// mouseReleased()
+      	}// mouseReleased()
    }//CustomMouseAdapter{}
 
 
    public void timerStop() {
-      timer.stop();      
-   }
-   
-   public void timerStart() {
-	      timer.start();      
-	   }
-//   public void LifeControl() {
-//
-//      if (lifeNum==3) {
-//         lifeIcon = life3;
-//         System.out.println("실행됩니다.");
-//         }
-//      else if (lifeNum==2) {
-//         lifeIcon = life2;
-//         }
-//      else {
-//         lifeIcon = life1;
-//         }
-//      }
+		timer.stop();		
+	}
+
    @Override
       public void update(Graphics g) {
          // TODO Auto-generated method stub
@@ -298,7 +286,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
       }
       
       if (f1==true && f2==true && f3==true && f4==true) {
-         g.drawImage(cle, 345, 135, 290, 260, this);
+    	  g.drawImage(cle, 345, 135, 290, 260, this);
       }
    }
     
