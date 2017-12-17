@@ -28,7 +28,7 @@ public class panel_stagep1 extends JPanel implements ActionListener  {
 		this.fr=fr;
 		ImageIcon img = new ImageIcon("pre.jpg","Previous_stage1");
 		JLabel bg = new JLabel(img);
-		ImageIcon readygo = new ImageIcon("readygo.gif");
+		ImageIcon readygo = new ImageIcon("readygo6.gif"); 
 		JLabel rego = new JLabel(readygo);
 		setBounds(0, 0, 1000, 600);
 		setLayout(null);
