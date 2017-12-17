@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -19,27 +20,32 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
+import java.util.Random;
+import java.util.TimerTask;;
 
 public class panel_stage1 extends JPanel implements ActionListener  {
 	frame fr;
    JProgressBar p;
    Timer timer;
    Timer endtimer;
+   Timer hinttimer;
    int lifeNum=3;
    int questionNum=4;
    int val;
-   
+   long htime;
    
    static int[] imageX = {277, 7, 483, 139};
    static int[] imageY = {101, 190, 110, 53};
    // 틀린부분의 범위 기본 설정값
-   static final int range = 15;
+   static final int range = 20;
    
-   static boolean f1 = false;
-   static boolean f2 = false;
-   static boolean f3 = false;
-   static boolean f4 = false;
-
+   boolean f1 = false;
+   boolean f2 = false;
+   boolean f3 = false;
+   boolean f4 = false;
+   boolean h1 = false;
+   boolean h2 = false;
+   
    
    ImageIcon img = new ImageIcon("image1.jpg","Stage1_image1");
    JLabel bg = new JLabel(img);
@@ -50,7 +56,12 @@ public class panel_stage1 extends JPanel implements ActionListener  {
    ImageIcon circle = new ImageIcon("circle.png");
    Image cir = circle.getImage();
    
-   ImageIcon clear2 = new ImageIcon("clear.gif");
+   ImageIcon circle2 = new ImageIcon("hint0.png");
+   Image cir2 = circle2.getImage();
+   
+   ImageIcon dotboki = new ImageIcon("hint.jpg");
+   ImageIcon dotboki2 = new ImageIcon("hint2.jpg");
+   ImageIcon clear2 = new ImageIcon("clear4.gif");
    Image cle = clear2.getImage();
    
    ImageIcon life1 = new ImageIcon("life1.png","1life");
@@ -80,10 +91,13 @@ public class panel_stage1 extends JPanel implements ActionListener  {
       setLayout(null);
 //      JLabel title = new JLabel("STAGE1 틀린그림찾기");
 //      title.setForeground(Color.BLACK);
-//      title.setHorizontalAlignment(SwingConstants.LEFT);
-//      title.setBounds(0, 30, 1000, 10);
+//      title.setHorizontalAlignment(SwingConstants.LEFT);      
+//      title.setBounds(0, 30, 1000, 30);
       JProgressBar progressBar = new JProgressBar();
       JButton button = new JButton("Pause");
+      JButton Hbutton = new JButton("h",dotboki);
+      Hbutton.addActionListener(this);
+      Hbutton.setBounds(400, 500, 60, 60);
       progressBar.setBackground(Color.white);
       progressBar.setForeground(new Color(184,119,84));
       //progressBar.setBorder(BorderFactory.createLineBorder(Color.green));
@@ -94,12 +108,16 @@ public class panel_stage1 extends JPanel implements ActionListener  {
       life.setIcon(new ImageIcon("life3.png","3life"));  
       question.setBounds(200, 480, 200, 100);
       question.setIcon(new ImageIcon("four.jpg","4que"));
+//      dot.setBounds(400, 480, 100, 100);
+//      dot.setIcon(new ImageIcon("hint.jpg","dotbogi"));
       //clear.setBounds(150,150,600,300);
       //clear.setIcon(new ImageIcon("clear.jpg"));
 //	  add(title);
       add(progressBar);
       add(life);
       add(question);
+//      add(dot);
+      add(Hbutton);
       
       add(button);
        progressBar.setValue(100);
@@ -108,7 +126,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
          public void actionPerformed(ActionEvent actionEvent) {
            val = progressBar.getValue();
            progressBar.setValue(--val);
-           if (val==0) {
+           if (val==0 || lifeNum == 0) {
         	   fr.change("panel_fail");
         	   timer.stop();
            }
@@ -116,23 +134,50 @@ public class panel_stage1 extends JPanel implements ActionListener  {
          }
        };
 
-       timer = new Timer(300, updateProBar);
+       timer = new Timer(300, updateProBar); //300
        timer.start();
        timer.isRunning();
        
-
+       
        button.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
-           if (timer.isRunning()) {
-             timer.stop();
-             button.setText("Start");
-           } else if (button.getText() != "Pause") {
-             timer.start();
-             button.setText("Pause");
-           }
+                   if (timer.isRunning()) {
+                     timer.stop();         
+                     fr.change("panel_pause");
+                   } 
          }
        });
-      
+       Hbutton.addActionListener(new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+//        	   if (timer.isRunning()) {
+//                   timer.stop();   
+//        	   }
+        	   h1=true;
+        	   bg.repaint();
+//             bg2.repaint();
+                  System.out.println("h1의 상태는" + h1);
+                  System.out.println("h2의 상태는" + h2);
+           }
+       });
+//               htime=System.currentTimeMillis();
+//               
+//               if (hinttimer != null && hinttimer.isRunning()) {
+//            	   hinttimer.stop();
+//               }
+//               hinttimer = new Timer(40,new ActionListener() {
+//				
+//				@Override
+//				public void actionPerformed(ActionEvent e) {
+//					if(System.currentTimeMillis() - htime >= 3000) {
+//						h1 = false;
+//						hinttimer.stop();
+//					}
+//				}
+//			});hinttimer.start();
+//               
+//           }
+//       });
+		
       //add(clear);
       //clear.setVisible(false);
       bg.setBounds(0,65,img.getIconWidth(), img.getIconHeight());
@@ -202,8 +247,11 @@ public class panel_stage1 extends JPanel implements ActionListener  {
     			life.setIcon(life2);
     		}
     		else if(lifeNum==1) {
-    			life.setIcon(life1);	
+    			life.setIcon(life1);
     		}
+//    		else if(lifeNum<=0) {
+//    			fr.change2("panel_fail");
+//    		}
     			    	   
     	   
        }
@@ -221,7 +269,21 @@ public class panel_stage1 extends JPanel implements ActionListener  {
 		}
        //       
 //       // 틀린부분을 다 찾으면 메세지 출력
+
+//			  ActionListener hintgo = new ActionListener() {
+//		            public void actionPerformed(ActionEvent actionEvent) {
+//		            	
+//		            	hinttimer.stop();
+//		            	
+//		            }
+//		};
+//		hinttimer = new Timer(2000, hintgo);
+//        hinttimer.start();
+//        hinttimer.isRunning();
+		
+		
        if (f1 == true && f2 == true && f3 == true && f4 == true) {
+    	lifeNum=1000; // 클리어 메시지에 틀린 곳을 클릭해도 이미 성공한 페이지므로 생명에 영향을 미치지 않게한다.
         System.out.println("축하합니다. 다 맞추셨습니다.");
         //여기다가 clear글자를 띄웁니다.
         
@@ -232,6 +294,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
             	fr.change("panel_stage2");          
               //여기다가 다음화면으로 넘어가는 코드를 넣습니다.
               endtimer.stop();
+              
        
             }
           };
@@ -240,6 +303,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
           endtimer.start();
           endtimer.isRunning();
        }
+      
 //        //다 완료하면 다시 시작을 위해 동그라미 갱신
 //        f1 = false;
 //        f2 = false;
@@ -256,6 +320,13 @@ public class panel_stage1 extends JPanel implements ActionListener  {
    public void timerStop() {
 		timer.stop();		
 	}
+   public void timerStart() {
+		timer.start();		
+	}
+//   public void hint() {
+//	   	Random random = new Random();
+//	   	int ranhint = random.nextInt(4)+1;
+//   }
 
    @Override
       public void update(Graphics g) {
@@ -268,6 +339,41 @@ public class panel_stage1 extends JPanel implements ActionListener  {
 
       super.paint(g);
       // 틀린그림부분에 동그라미 그리기
+      if (h1 == true) {			// 힌트 동그라미 그리기
+    	  if (f1 == false) {
+    	  g.drawImage(cir2, 250, 135, 60, 60, this);
+    	  g.drawImage(cir2, 745, 135, 60, 60, this);
+    	  h2=true;
+    	  System.out.println("f1 실행된다.");
+    	  }
+    	  else {
+    		  
+    		  if(f2 == false && h2 == false) {
+    			  g.drawImage(cir2, 0, 225, 60, 60, this);
+    			  g.drawImage(cir2, 499, 225, 60, 60, this);
+    			  h2=true;
+    			  System.out.println("f2 실행된다.");
+    			  }
+    		  else {
+    			  if(f3 == false && h2 == false) {
+    				  g.drawImage(cir2, 442, 145, 60, 60, this);
+    				  g.drawImage(cir2, 935, 145, 60, 60, this);
+    				  h2=true;
+    				  System.out.println("f3 실행된다.");
+    			  }
+    		  
+    			  else {
+    				  if(f4 == false && h2 == false) {
+    					  g.drawImage(cir2, 120, 87, 60, 60, this);
+        				  g.drawImage(cir2, 610, 87, 60, 60, this);
+        				  h2=true;
+        				  System.out.println("f4 실행된다.");
+        			  }
+    			  }
+    		  }
+    				  
+    	  }
+      }
       if (f1 == true) {
          g.drawImage(cir, 250, 135, 60, 60, this);      //파란애
          g.drawImage(cir, 745, 135, 60, 60, this);
@@ -289,9 +395,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
     	  g.drawImage(cle, 345, 135, 290, 260, this);
       }
    }
-    
-    
-    
+       
    @Override
    public void actionPerformed(ActionEvent arg0) {
       // TODO Auto-generated method stub
