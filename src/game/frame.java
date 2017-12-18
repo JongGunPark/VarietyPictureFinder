@@ -1,8 +1,13 @@
 package game;
 
+import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.*;
 import javax.swing.*;
+//import java.awt.Cursor;
 
 public class frame extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -13,9 +18,16 @@ public class frame extends JFrame {
 	JPanel panel_stage2;
 	JPanel panel_howto;
 	JPanel panel_pause;
-	
+	JPanel panel_final;
+	long startTime;
+//	long endTime;
+//	Toolkit tk = Toolkit.getDefaultToolkit();
+//	Image img = tk.getImage("pen.png");
 	
 	public frame() {
+		startTime = System.currentTimeMillis();
+		CustomCursor();
+//		Cursor myCursor = tk.createCustomCursor(img,new Point(10,10), "Pen");
 		setTitle("다양한 그림 찾기");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ImageIcon img = new ImageIcon("배경.jpg","배경");
@@ -25,9 +37,7 @@ public class frame extends JFrame {
 		setLayout(null);
 	
 		add(panel_main);
-		panel_main.setVisible(true);
-		
-
+		panel_main.setVisible(true);		
 		
 		panel_stagep1 = new panel_stagep1(this);
 		add(panel_stagep1);		
@@ -54,6 +64,10 @@ public class frame extends JFrame {
 		panel_pause = new panel_pause(this);
 	    add(panel_pause);
 	    panel_pause.setVisible(false);
+	    
+	    panel_final = new panel_final(this);
+	    add(panel_final);
+	    panel_final.setVisible(false);
 		
 		setVisible(true);
 		setResizable(false); // 창 크기 고정						
@@ -140,6 +154,32 @@ public class frame extends JFrame {
 					panel_stagep1.setVisible(true);			
 					}
 		      }
+	 public void change3(String Panel_name) {
+		 if(Panel_name.equals("panel_final")){
+			 	panel_main.setVisible(false);
+				
+				remove(panel_final);
+				panel_final = new panel_final(this);
+				add(panel_final);
+				panel_final.setVisible(true);
+	      }
+		 else if(Panel_name.equals("panel_main")){
+	    	 panel_final.setVisible(false);
+	         panel_main.setVisible(true);
+	      }
+//		 else if(Panel_name.equals("panel_final")){
+//			 endTime=System.currentTimeMillis();
+//	    	 panel_final.setVisible(false);
+//	         panel_main.setVisible(true);
+//	      }
+	 }
+	 public void CustomCursor() {
+		 Toolkit toolkit = Toolkit.getDefaultToolkit();
+		 Image img = toolkit.getImage("pen1.png");
+		 Point point = new Point(0,10);
+		 Cursor cursor = toolkit.createCustomCursor(img, point, "cursor");
+		 setCursor(cursor);
+	 }
 	   
 	
 	public static void main(String[] args) {
