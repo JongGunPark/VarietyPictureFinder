@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,6 +18,7 @@ public class panel_final extends JPanel implements ActionListener {
    long endTime;
    int score;
    Font f1;
+   
    public panel_final(frame fr) {
       this.fr = fr;
       f1 = new Font("³ª´®¼Õ±Û¾¾ Ææ", Font.BOLD, 50);
@@ -27,7 +29,7 @@ public class panel_final extends JPanel implements ActionListener {
       ImageIcon im2= new ImageIcon("START2.png");
       ImageIcon rego = new ImageIcon("rego3.png","regame");
       ImageIcon rego2 = new ImageIcon("rego4.png");
-      score=(int) ((endTime-fr.startTime)/10);
+      score=(int) (90000-(endTime-fr.startTime)/10);
       setBounds(0, 0, 1000, 600);
       JLabel sc = new JLabel("ÃÖÁ¾ Á¡¼ö : " + score + "Á¡");
 	  sc.setForeground(Color.BLACK);
@@ -41,7 +43,7 @@ public class panel_final extends JPanel implements ActionListener {
       btnRego.setBorderPainted(false);
       btnRego.setContentAreaFilled(false);
       btnRego.setRolloverIcon(rego2);
-      System.out.println((endTime-fr.startTime)/1000);
+//      System.out.println((endTime-fr.startTime)/1000);
       
       setBounds(0, 0, 1000, 600);
       setLayout(null);
@@ -54,13 +56,12 @@ public class panel_final extends JPanel implements ActionListener {
       add(btnRego);
       bg.setBounds(0,0,1000, 600);
       add(bg);
-      setVisible(true);
-      
+      setVisible(true);     
    }   
 
 
    
    public void actionPerformed(ActionEvent e) {
-         fr.change3("panel_main");
+         fr.change2("panel_main");
    }
 }

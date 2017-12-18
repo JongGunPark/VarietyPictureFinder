@@ -28,7 +28,7 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 
-public class panel_stage1 extends JPanel implements ActionListener  {
+public class panel_stage3 extends JPanel implements ActionListener  {
 
    frame fr;
    JProgressBar p;
@@ -46,8 +46,8 @@ public class panel_stage1 extends JPanel implements ActionListener  {
    File Clap2 =new File("wrong.wav");
    File Clap3 =new File("hints.wav");
    
-   static int[] imageX = {277, 7, 483, 139};
-   static int[] imageY = {101, 190, 110, 53};
+   static int[] imageX = {472, 382, 265, 849};
+   static int[] imageY = {79, 136, 243, 10};
    // 틀린부분의 범위 기본 설정값
    static final int range = 20;
    static final int range2 = 10;
@@ -61,15 +61,13 @@ public class panel_stage1 extends JPanel implements ActionListener  {
    boolean h2 = false;
    boolean h3 = false;
    
-   ImageIcon stage1 = new ImageIcon("stage1.png","Stage1");
-   JLabel stage11 = new JLabel(stage1);
+   ImageIcon stage2 = new ImageIcon("stage3.png","Stage2");
+   JLabel stage11 = new JLabel(stage2);
    
    
-   ImageIcon img = new ImageIcon("image1.jpg","Stage1_image1");
+   ImageIcon img = new ImageIcon("image5.jpg","Stage1_image1");
    JLabel bg = new JLabel(img);
    
-   ImageIcon img2 = new ImageIcon("image2.jpg","Stage1_image2");
-   JLabel bg2 = new JLabel(img2);
    
    ImageIcon xig = new ImageIcon("x.png");
    Image x = xig.getImage();
@@ -98,7 +96,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
    JLabel question = new JLabel();   // 남은 문제의 갯수 라벨 : 정답 체크 수에 따라 변화
    
    //JLabel clear = new JLabel();
-   public panel_stage1(frame fr) {
+   public panel_stage3(frame fr) {
       
      this.fr = fr;
      setBackground(new Color(252,241,192));
@@ -106,7 +104,6 @@ public class panel_stage1 extends JPanel implements ActionListener  {
       //image1 이미지가 저장된 JPanel a 객체에 감지기 설정
       bg.addMouseListener(cma);
       //image1 이미지가 저장된 JPanel b 객체에 감지기 설정
-      bg2.addMouseListener(cma);
       
       setBounds(0, 0, 1000, 600);
       setLayout(null);
@@ -133,7 +130,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
       progressBar.setBorderPainted(false);
       progressBar.setBounds(0, 464, 1000, 20);
       
-      stage11.setBounds(10, 10, 240, 45);
+      stage11.setBounds(10, 10, 300, 55);
       life.setBounds(30, 445, 250, 170);
       life.setIcon(new ImageIcon("life3.png","3life"));  
       question.setBounds(390, 428, 250, 200);
@@ -158,10 +155,10 @@ public class panel_stage1 extends JPanel implements ActionListener  {
            val = progressBar.getValue();
            progressBar.setValue(--val);
            if (val==0 || lifeNum == 0) {
-              fr.change("panel_fail");
+              fr.change2("panel_fail");
               timer.stop();
            }
-           System.out.println("(0~100) 남은 바: " + progressBar.getValue());
+           System.out.println(progressBar.getValue());
          }
        };
 
@@ -174,7 +171,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
          public void actionPerformed(ActionEvent e) {
                    if (timer.isRunning()) {
                      timer.stop();         
-                     fr.change("panel_pause");
+                     fr.change("panel_pause3");
                    } 
          }
        });
@@ -185,13 +182,12 @@ public class panel_stage1 extends JPanel implements ActionListener  {
 //              }
               
               h1=true;
-//              bg.repaint();
-              bg2.repaint();
-                  System.out.println("힌트버튼을 눌렀습니다.");
+                 bg.repaint();
+
                   System.out.println("h1의 상태는" + h1);
+                  System.out.println("h2의 상태는" + h2);
                if(h3==false) {
                   PlaySound(Clap3);
-                  System.out.println("힌트가 사용되었습니다.");
                }
                   h3=true;
            }
@@ -201,8 +197,6 @@ public class panel_stage1 extends JPanel implements ActionListener  {
       //clear.setVisible(false);
       bg.setBounds(0,65,img.getIconWidth(), img.getIconHeight());
       add(bg);
-      bg2.setBounds(500,65,img2.getIconWidth(), img2.getIconHeight());
-      add(bg2);
       
       
       setVisible(true);
@@ -219,6 +213,17 @@ public class panel_stage1 extends JPanel implements ActionListener  {
             return (pointX >= imageX[index]-range) && (pointX <= imageX[index]+range) 
                   && (pointY >= imageY[index]-range) && (pointY <= imageY[index]+range);
      }
+//   public boolean isRangeof2(int index, Point p){
+//         //포인트 X좌표를 입력받아 pointX로 저장
+//               int pointX2 = p.x;
+//               pointxx = pointX2;
+//         //포인트 Y좌표를 입력받아 pointX로 저장
+//               int pointY2 = p.y;
+//               pointyy = pointY2;
+//         //배열순번과 해당좌표를 입력해 반환
+//               return (pointX2 >= imageX[index]-range2) && (pointX2 <= imageX[index]+range2) 
+//                     && (pointY2 >= imageY[index]-range2) && (pointY2 <= imageY[index]+range2);
+//        }
      
    
    class CustomMouseAdapter extends MouseAdapter{
@@ -232,7 +237,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
          }
           f1 = true; 
           bg.repaint();
-          bg2.repaint(); //양쪽모두 동그라미 표시를 위한 repaint
+   
           PlaySound(Clap);
           
        } else if (isRangeof(1,p)) {
@@ -241,7 +246,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
              }
           f2 = true;
           bg.repaint();
-          bg2.repaint();
+         
           PlaySound(Clap);
           
        } else if (isRangeof(2,p)) {
@@ -250,7 +255,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
              }
           f3 = true;
           bg.repaint();
-          bg2.repaint();
+        
           PlaySound(Clap);
           
        } else if (isRangeof(3,p)) {
@@ -259,7 +264,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
            }
           f4 = true;
           bg.repaint();
-          bg2.repaint();
+       
           PlaySound(Clap);
           
        } else {             // 엑스표시
@@ -268,7 +273,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
           
           fx = false;
             bg.repaint();
-            bg2.repaint();
+           
            PlaySound(Clap2);
            
           if (lifeNum==2) {
@@ -279,7 +284,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
           }
 //          else if(lifeNum<=0) {
 //             fr.change2("panel_fail");
-//         }
+//          }
                        
           
        }
@@ -307,7 +312,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
         timerStop();
         ActionListener andthenClear = new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-               fr.change("panel_stagep2");          
+               fr.change("panel_final");          
               //여기다가 다음화면으로 넘어가는 코드를 넣습니다.
               endtimer.stop();     
             }
@@ -342,7 +347,7 @@ public class panel_stage1 extends JPanel implements ActionListener  {
             System.out.println("x의 좌표 : "+xx+"  y의 좌표 : "+yy);
             fx = true;
             bg.repaint();
-            bg2.repaint();
+            
          }
       }     
    }//CustomMouseAdapter{}
@@ -379,31 +384,27 @@ public class panel_stage1 extends JPanel implements ActionListener  {
       // 틀린그림부분에 동그라미 그리기
       if (h1 == true) {                        // 힌트 동그라미 그리기
          if (f1 == false) {
-         g.drawImage(cir2, 250, 135, 60, 60, this);
-         g.drawImage(cir2, 745, 135, 60, 60, this);
-         h2=true;
-         System.out.println("f1 실행된다.");
+            g.drawImage(cir2, 442, 120, 60, 60, this);
+            h2=true;
+            System.out.println("f1 실행된다.");
          }
          else {
             
             if(f2 == false && h2 == false) {
-               g.drawImage(cir2, 0, 225, 60, 60, this);
-               g.drawImage(cir2, 499, 225, 60, 60, this);
+                g.drawImage(cir2, 352, 182, 60, 60, this);
                h2=true;
                System.out.println("f2 실행된다.");
                }
             else {
                if(f3 == false && h2 == false) {
-                  g.drawImage(cir2, 442, 145, 60, 60, this);
-                  g.drawImage(cir2, 935, 145, 60, 60, this);
+                  g.drawImage(cir2, 245, 285, 60, 60, this);
                   h2=true;
                   System.out.println("f3 실행된다.");
                }
             
                else {
                   if(f4 == false && h2 == false) {
-                     g.drawImage(cir2, 120, 87, 60, 60, this);
-                      g.drawImage(cir2, 610, 87, 60, 60, this);
+                     g.drawImage(cir2, 830, 65, 60, 60, this);
                       h2=true;
                       System.out.println("f4 실행된다.");
                    }
@@ -413,31 +414,27 @@ public class panel_stage1 extends JPanel implements ActionListener  {
          }
       }
       if (f1 == true) {
-         g.drawImage(cir, 250, 135, 60, 60, this);      //파란애
-         g.drawImage(cir, 745, 135, 60, 60, this);
-         
+         g.drawImage(cir, 442, 120, 60, 60, this);      // 1
+
       } 
       if (f2 == true) {
-         g.drawImage(cir, 0, 225, 60, 60, this);      //가방
-         g.drawImage(cir, 499, 225, 60, 60, this);
-         
+         g.drawImage(cir, 352, 182, 60, 60, this);      // 2
+
       }
       if (f3 == true) {
-          g.drawImage(cir, 442, 145, 60, 60, this);      //구름
-          g.drawImage(cir, 935, 145, 60, 60, this);
-          
+          g.drawImage(cir, 245, 285, 60, 60, this);      // 3
+
       }
       if (f4 == true) {
-          g.drawImage(cir, 120, 87, 60, 60, this);      //거북이 등
-          g.drawImage(cir, 610, 87, 60, 60, this);
-          
+          g.drawImage(cir, 830, 65, 60, 60, this);      // 4
+       
       }      
       if (f1==true && f2==true && f3==true && f4==true) {
          g.drawImage(cle, 100, 105, 800, 300, this);
       }
       if (fx==true) {
-//       g.drawImage(x, pointxx-range, pointyy-range+70, 60, 60, this);
-         g.drawImage(x, pointxx+493-range, pointyy-range+70, 60, 60, this);
+         g.drawImage(x, pointxx-range, pointyy-range+70, 60, 60, this);
+        // g.drawImage(x, pointxx+493-range, pointyy-range+70, 60, 60, this);
       }
       
    }

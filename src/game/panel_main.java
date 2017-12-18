@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,7 @@ public class panel_main extends JPanel implements ActionListener {
    public JLabel bg;
    public JButton btn1;
    public JButton btn2;
+   Insets m = new Insets(0, 14, 0, 0); // Inset이 여백값 설정
    
    public panel_main(frame fr) {
       this.fr=fr;
@@ -46,9 +48,11 @@ public class panel_main extends JPanel implements ActionListener {
       btn2.setRolloverIcon(img33);
       
       setLayout(null);      
-      btn1.setBounds(650,350,197, 80);
+      btn1.setBounds(630,350,192, 80);
+      btn1.setMargin(m);
       add(btn1);
-      btn2.setBounds(650,450,197, 80);
+      btn2.setBounds(630,450,192, 80);
+      btn2.setMargin(m);
       add(btn2);
       add(bg);
       bg.setBounds(0,0,img.getIconWidth(), img.getIconHeight()); // 1000x600
@@ -70,4 +74,3 @@ public class panel_main extends JPanel implements ActionListener {
    }
 
 }
-
